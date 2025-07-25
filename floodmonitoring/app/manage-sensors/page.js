@@ -1,5 +1,4 @@
 'use client';
-import Layout from '@/components/Layout';
 import { useState } from 'react';
 
 export default function ManageSensors() {
@@ -43,7 +42,7 @@ export default function ManageSensors() {
   };
 
   return (
-    <Layout title="Manage Sensors | Flood Monitoring System">
+    <div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
           <h2 className="text-lg font-semibold text-gray-800">Sensor Management</h2>
@@ -169,6 +168,6 @@ export default function ManageSensors() {
           </div>
         </div>
       )}
-    </Layout>
+    </div>
   );
 }

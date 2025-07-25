@@ -74,14 +74,14 @@ export default function Dashboard() {
             {/* Dashboard Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">Flood Monitoring Overview</h2>
-                <p className="text-gray-600">Real-time data from monitoring stations</p>
+                <h2 className="text-2xl font-bold">Flood Monitoring Overview</h2>
+                <p className="text-gray-700">Real-time data from monitoring stations</p>
               </div>
               <div className="mt-4 md:mt-0 flex space-x-2">
                 <select 
                   value={timeRange}
                   onChange={(e) => setTimeRange(e.target.value)}
-                  className="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  className="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm text-black"
                 >
                   <option value="1h">Last hour</option>
                   <option value="6h">Last 6 hours</option>
@@ -94,24 +94,24 @@ export default function Dashboard() {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
               <div className="bg-white p-4 rounded-lg shadow border-l-4 border-red-500">
-                <h3 className="text-sm font-medium text-gray-500">Critical Stations</h3>
+                <h3 className="text-sm font-medium">Critical Stations</h3>
                 <p className="text-2xl font-bold">{criticalStations}</p>
-                <p className="text-xs text-gray-500">{Math.round((criticalStations / totalStations) * 100)}% of total</p>
+                <p className="text-xs">{Math.round((criticalStations / totalStations) * 100)}% of total</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow border-l-4 border-yellow-500">
-                <h3 className="text-sm font-medium text-gray-500">Warning Stations</h3>
+                <h3 className="text-sm font-medium">Warning Stations</h3>
                 <p className="text-2xl font-bold">{floodData.filter(s => s.level === 'moderate').length}</p>
-                <p className="text-xs text-gray-500">Monitor closely</p>
+                <p className="text-xs">Monitor closely</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
-                <h3 className="text-sm font-medium text-gray-500">Normal Stations</h3>
+                <h3 className="text-sm font-medium">Normal Stations</h3>
                 <p className="text-2xl font-bold">{floodData.filter(s => s.level === 'low').length}</p>
-                <p className="text-xs text-gray-500">No immediate risk</p>
+                <p className="text-xs">No immediate risk</p>
               </div>
               <div className="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
-                <h3 className="text-sm font-medium text-gray-500">Total Stations</h3>
+                <h3 className="text-sm font-medium">Total Stations</h3>
                 <p className="text-2xl font-bold">{totalStations}</p>
-                <p className="text-xs text-gray-500">Active monitoring points</p>
+                <p className="text-xs">Active monitoring points</p>
               </div>
             </div>
 
@@ -120,7 +120,7 @@ export default function Dashboard() {
               {/* Map Column */}
               <div className="lg:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-gray-800">Flood Monitoring Map</h2>
+                  <h2 className="text-lg font-semibold">Flood Monitoring Map</h2>
                   <div className="flex space-x-2">
                     <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
                       Layers
@@ -144,7 +144,7 @@ export default function Dashboard() {
               {/* Station Status Column */}
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="p-4 border-b border-gray-200">
-                  <h2 className="text-lg font-semibold text-gray-800">Station Status</h2>
+                  <h2 className="text-lg font-semibold">Station Status</h2>
                 </div>
                 <div className="p-4">
                   <div className="space-y-4">
@@ -158,7 +158,7 @@ export default function Dashboard() {
                                 station.level === 'high' ? 'bg-red-500' :
                                 station.level === 'moderate' ? 'bg-yellow-500' : 'bg-green-500'
                               }`}></span>
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm">
                                 {station.level.charAt(0).toUpperCase() + station.level.slice(1)} risk
                               </p>
                             </div>
@@ -167,13 +167,13 @@ export default function Dashboard() {
                             <p className="text-sm font-semibold">{station.waterLevel}m</p>
                             <div className={`flex items-center justify-end text-xs ${
                               station.trend === 'rising' ? 'text-red-500' :
-                              station.trend === 'falling' ? 'text-green-500' : 'text-gray-500'
+                              station.trend === 'falling' ? 'text-green-500' : 'text-gray-700'
                             }`}>
                               {station.trend === 'rising' ? '↑' : station.trend === 'falling' ? '↓' : '→'} {station.trend}
                             </div>
                           </div>
                         </div>
-                        <div className="mt-3 flex justify-between items-center text-xs text-gray-500">
+                        <div className="mt-3 flex justify-between items-center text-xs">
                           <span>Last updated: {station.lastUpdated.toLocaleTimeString()}</span>
                           <button className="text-blue-600 hover:text-blue-800">
                             Details →
@@ -189,10 +189,10 @@ export default function Dashboard() {
             {/* Charts */}
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="p-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-800">Water Level Trends</h2>
+                <h2 className="text-lg font-semibold">Water Level Trends</h2>
               </div>
               <div className="p-4 h-64 flex items-center justify-center bg-gray-50">
-                <p className="text-gray-500">Water level chart will be displayed here</p>
+                <p className="text-gray-700">Water level chart will be displayed here</p>
               </div>
             </div>
           </>
@@ -211,7 +211,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 text-black">
       {/* Sidebar Navigation */}
       <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-blue-800 text-white shadow-md transition-all duration-300 flex flex-col`}>
         <div>
@@ -302,7 +302,7 @@ export default function Dashboard() {
         <header className="bg-white shadow-sm">
           <div className="container mx-auto px-4 py-3 flex justify-between items-center">
             <div>
-              <h2 className="text-lg font-semibold text-gray-800">
+              <h2 className="text-lg font-semibold">
                 {activeTab === 'dashboard' && 'Flood Monitoring Dashboard'}
                 {activeTab === 'manage-sensors' && 'Manage Sensors'}
                 {activeTab === 'user-management' && 'User Management'}
@@ -330,7 +330,7 @@ export default function Dashboard() {
 
         {/* Footer */}
         <footer className="bg-gray-100 border-t border-gray-200 py-4">
-          <div className="container mx-auto px-4 text-center text-sm text-gray-500">
+          <div className="container mx-auto px-4 text-center text-sm">
             <p>© {new Date().getFullYear()} Flood Monitoring System. All rights reserved.</p>
           </div>
         </footer>

@@ -1,13 +1,19 @@
 'use client';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
 import dynamic from 'next/dynamic';
 
 // Dynamically import the Map component to avoid SSR issues with Leaflet
 const MapWithNoSSR = dynamic(
-  () => import('../components/Map'),
-  { ssr: false }
+  () => import('../components/Map').then((mod) => mod.default),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    )
+  }
 );
 
 export default function Home() {
@@ -22,28 +28,28 @@ export default function Home() {
       // In a real app, you would fetch from your API
       setTimeout(() => {
         setFloodData([
-  { 
-    id: 1, 
-    location: [8.723305556, 124.8045833], 
-    level: 'moderate', 
-    lastUpdated: new Date(),
-    name: "Cagayan de Oro Central"
-  },
-  { 
-    id: 2, 
-    location: [8.7333, 124.8145], 
-    level: 'high', 
-    lastUpdated: new Date(),
-    name: "Macajalar Bay Area"
-  },
-  { 
-    id: 3, 
-    location: [8.7133, 124.7945], 
-    level: 'low', 
-    lastUpdated: new Date(),
-    name: "Upper Puerto Area"
-  },
-]);
+          { 
+            id: 1, 
+            location: [8.723305556, 124.8045833], 
+            level: 'moderate', 
+            lastUpdated: new Date(),
+            name: "Cagayan de Oro Central"
+          },
+          { 
+            id: 2, 
+            location: [8.7333, 124.8145], 
+            level: 'high', 
+            lastUpdated: new Date(),
+            name: "Macajalar Bay Area"
+          },
+          { 
+            id: 3, 
+            location: [8.7133, 124.7945], 
+            level: 'low', 
+            lastUpdated: new Date(),
+            name: "Upper Puerto Area"
+          },
+        ]);
         setIsLoading(false);
       }, 1000);
     };
@@ -52,52 +58,42 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Head>
-        <title>Flood Monitoring System</title>
-        <link
-          rel="stylesheet"
-          href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-          crossOrigin=""
-        />
-      </Head>
-
+    <div className="min-h-screen bg-gray-50 text-black">
       {/* Header */}
       <header className="bg-blue-800 text-white shadow-md">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
-            </svg>
-            <h1 className="text-xl font-bold">Flood Monitoring System</h1>
+            <div className="flex items-center space-x-2">
+              <img src="/logo.png" alt="Flood Icon" className="h-8 w-8" />
+              <h1 className="text-xl font-bold">Flood Monitoring System</h1>
+            </div>
           </div>
           <nav>
-  <ul className="flex space-x-6">
-    <li>
-      <Link href="/dashboard" className="hover:text-blue-200">
-        Dashboard
-      </Link>
-    </li>
-    <li>
-      <Link href="#" className="hover:text-blue-200">
-        Alerts
-      </Link>
-    </li>
-    <li>
-      <Link href="#" className="hover:text-blue-200">
-        Reports
-      </Link>
-    </li>
-    <li>
-      <Link href="#" className="hover:text-blue-200">
-        About
-      </Link>
-    </li>
-  </ul>
-</nav>
+            <ul className="flex space-x-6">
+              <li>
+                <Link href="/dashboard" className="hover:text-blue-200 text-white">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-blue-200 text-white">
+                  Alerts
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-blue-200 text-white">
+                  Reports
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-blue-200 text-white">
+                  About
+                </Link>
+              </li>
+            </ul>
+          </nav>
           <div className="flex items-center space-x-4">
-            <button className="bg-blue-700 hover:bg-blue-600 px-3 py-1 rounded">
+            <button className="bg-blue-700 hover:bg-blue-600 px-3 py-1 rounded text-white">
               Login
             </button>
           </div>
@@ -105,13 +101,13 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 py-6 text-black">
         {/* Alert Banner */}
         {alertLevel && (
           <div className={`mb-6 p-4 rounded-lg shadow ${
             alertLevel === 'severe' ? 'bg-red-600 text-white' :
             alertLevel === 'high' ? 'bg-orange-500 text-white' :
-            alertLevel === 'moderate' ? 'bg-yellow-400 text-gray-800' : 'bg-blue-400 text-white'
+            alertLevel === 'moderate' ? 'bg-yellow-400 text-black' : 'bg-blue-400 text-black'
           }`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -138,7 +134,7 @@ export default function Home() {
           {/* Map Column */}
           <div className="lg:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
             <div className="p-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-800">Flood Monitoring Map</h2>
+              <h2 className="text-lg font-semibold">Flood Monitoring Map</h2>
             </div>
             <div className="h-96 w-full relative">
               {isLoading ? (
@@ -177,7 +173,7 @@ export default function Home() {
           {/* Data Column */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="p-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-800">Flood Data</h2>
+              <h2 className="text-lg font-semibold">Flood Data</h2>
             </div>
             <div className="p-4">
               <div className="flex border-b border-gray-200 pb-2 mb-4">
@@ -204,21 +200,21 @@ export default function Home() {
               {activeTab === 'overview' && (
                 <div>
                   <div className="mb-6">
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Current Status</h3>
+                    <h3 className="text-sm font-semibold uppercase tracking-wider mb-2">Current Status</h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-blue-50 p-3 rounded-lg">
-                        <p className="text-xs text-gray-500">Active Alerts</p>
+                        <p className="text-xs text-gray-700">Active Alerts</p>
                         <p className="text-xl font-bold">3</p>
                       </div>
                       <div className="bg-blue-50 p-3 rounded-lg">
-                        <p className="text-xs text-gray-500">Monitoring Stations</p>
+                        <p className="text-xs text-gray-700">Monitoring Stations</p>
                         <p className="text-xl font-bold">24</p>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Recent Events</h3>
+                    <h3 className="text-sm font-semibold uppercase tracking-wider mb-2">Recent Events</h3>
                     <div className="space-y-3">
                       {[1, 2, 3].map((item) => (
                         <div key={item} className="flex items-start space-x-3">
@@ -228,7 +224,7 @@ export default function Home() {
                           }`}></div>
                           <div>
                             <p className="text-sm font-medium">Flood alert #{item} triggered</p>
-                            <p className="text-xs text-gray-500">2{item} minutes ago</p>
+                            <p className="text-xs text-gray-700">2{item} minutes ago</p>
                           </div>
                         </div>
                       ))}
@@ -251,7 +247,7 @@ export default function Home() {
                             {data.level.charAt(0).toUpperCase() + data.level.slice(1)} risk
                           </p>
                         </div>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-700">
                           {data.lastUpdated.toLocaleTimeString()}
                         </span>
                       </div>
@@ -269,7 +265,7 @@ export default function Home() {
                     <input 
                       type="text" 
                       placeholder="Search stations..." 
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-black"
                     />
                   </div>
                   <div className="space-y-3">
@@ -284,7 +280,7 @@ export default function Home() {
                           </div>
                           <div>
                             <p className="text-sm font-medium">Station #{station}</p>
-                            <p className="text-xs text-gray-500">Last update: 15m ago</p>
+                            <p className="text-xs text-gray-700">Last update: 15m ago</p>
                           </div>
                         </div>
                         <button className="text-blue-600 hover:text-blue-800 text-sm">
@@ -302,7 +298,7 @@ export default function Home() {
         {/* Recent Reports Section */}
         <div className="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
           <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-gray-800">Recent Reports</h2>
+            <h2 className="text-lg font-semibold">Recent Reports</h2>
             <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
               View All
             </button>
@@ -311,29 +307,29 @@ export default function Home() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Water Level</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reported</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Location</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Status</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Water Level</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Reported</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {[1, 2, 3].map((report) => (
                   <tr key={report} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Location {report}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">Location {report}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        report === 1 ? 'bg-red-100 text-red-800' :
-                        report === 2 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
+                        report === 1 ? 'bg-red-100 text-black' :
+                        report === 2 ? 'bg-yellow-100 text-black' : 'bg-green-100 text-black'
                       }`}>
                         {report === 1 ? 'Critical' : report === 2 ? 'Warning' : 'Normal'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
                       {report === 1 ? '3.2m' : report === 2 ? '2.1m' : '1.4m'}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
                       {report} hour{report !== 1 ? 's' : ''} ago
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -354,36 +350,36 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4">Flood Monitoring</h3>
-              <p className="text-gray-400 text-sm">Real-time flood monitoring and alert system for disaster prevention.</p>
+              <p className="text-sm">Real-time flood monitoring and alert system for disaster prevention.</p>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><a href="#" className="hover:text-white">Home</a></li>
-                <li><a href="#" className="hover:text-white">Map</a></li>
-                <li><a href="#" className="hover:text-white">Alerts</a></li>
-                <li><a href="#" className="hover:text-white">Reports</a></li>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-blue-200">Home</a></li>
+                <li><a href="#" className="hover:text-blue-200">Map</a></li>
+                <li><a href="#" className="hover:text-blue-200">Alerts</a></li>
+                <li><a href="#" className="hover:text-blue-200">Reports</a></li>
               </ul>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Resources</h3>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><a href="#" className="hover:text-white">Documentation</a></li>
-                <li><a href="#" className="hover:text-white">API</a></li>
-                <li><a href="#" className="hover:text-white">Data Sources</a></li>
-                <li><a href="#" className="hover:text-white">FAQ</a></li>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-blue-200">Documentation</a></li>
+                <li><a href="#" className="hover:text-blue-200">API</a></li>
+                <li><a href="#" className="hover:text-blue-200">Data Sources</a></li>
+                <li><a href="#" className="hover:text-blue-200">FAQ</a></li>
               </ul>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-gray-400 text-sm">
+              <ul className="space-y-2 text-sm">
                 <li>Email: info@floodmonitor.org</li>
                 <li>Phone: +1 (555) 123-4567</li>
                 <li>Emergency: 911</li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-700 mt-8 pt-6 text-sm text-gray-400 text-center">
+          <div className="border-t border-gray-700 mt-8 pt-6 text-sm text-center">
             <p>© {new Date().getFullYear()} Flood Monitoring System. All rights reserved.</p>
           </div>
         </div>

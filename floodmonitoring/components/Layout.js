@@ -43,7 +43,7 @@ export default function Layout({ children, title = "Flood Monitoring System" }) 
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-6">
-        <div className="container mx-auto px-4 text-center text-sm text-gray-400">
+        <div className="container mx-auto px-4 text-center text-sm text-white-400">
           <p>© {new Date().getFullYear()} Flood Monitoring System. All rights reserved.</p>
         </div>
       </footer>

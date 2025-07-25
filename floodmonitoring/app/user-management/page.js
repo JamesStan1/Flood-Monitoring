@@ -1,5 +1,4 @@
 'use client';
-import Layout from '@/components/Layout';
 import { useState } from 'react';
 
 const UserManagementPage = () => {
@@ -36,7 +35,7 @@ const UserManagementPage = () => {
   };
 
   return (
-    <Layout title="User Management | Flood Monitoring System">
+    <div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
           <h2 className="text-lg font-semibold text-gray-800">User Management</h2>
@@ -157,7 +156,7 @@ const UserManagementPage = () => {
           </div>
         </div>
       )}
-    </Layout>
+    </div>
   );
 };
 
