@@ -76,17 +76,17 @@ export default function Home() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-blue-200 text-white">
+                <Link href="/alerts" className="hover:text-blue-200 text-white">
                   Alerts
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-blue-200 text-white">
+                <Link href="/reports" className="hover:text-blue-200 text-white">
                   Reports
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-blue-200 text-white">
+                <Link href="/about" className="hover:text-blue-200 text-white">
                   About
                 </Link>
               </li>
