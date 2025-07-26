@@ -1,5 +1,5 @@
 // app/api/login/route.js
-import { query } from '@/lib/db';
+import { query } from '../../lib/db'; // Adjust the path as necessary
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 
