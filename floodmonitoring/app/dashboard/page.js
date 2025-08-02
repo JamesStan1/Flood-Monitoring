@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation';
 
 // Dynamically import components
 const MapWithNoSSR = dynamic(() => import('../../components/Map'), { ssr: false });
-const ManageSensors = dynamic(() => import('../manage-sensors/page'));
-const UserManagement = dynamic(() => import('../user-management/page'));
-const SMSSettings = dynamic(() => import('../smssettings/page'));
-const WaterLevelHistory = dynamic(() => import('../water-level-history/page'));
+const ManageSensors = dynamic(() => import('./manage-sensors/page'));
+const UserManagement = dynamic(() => import('./user-management/page'));
+const SMSSettings = dynamic(() => import('./smssettings/page'));
+const WaterLevelHistory = dynamic(() => import('./water-level-history/page'));
 
 export default function Dashboard() {
   const router = useRouter();

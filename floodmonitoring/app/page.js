@@ -1,7 +1,7 @@
 'use client';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import Header from '../components/Header'; // ✅ Import Header
 
 // Dynamically import the Map component to avoid SSR issues with Leaflet
 const MapWithNoSSR = dynamic(
@@ -21,40 +21,15 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [alertLevel, setAlertLevel] = useState('moderate'); // 'low', 'moderate', 'high', 'severe'
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [loginForm, setLoginForm] = useState({
-    username: '',
-    password: '',
-    loading: false,
-    error: ''
-  });
 
   // Simulate fetching flood data
   useEffect(() => {
     const fetchData = async () => {
       setTimeout(() => {
         setFloodData([
-          { 
-            id: 1, 
-            location: [8.723305556, 124.8045833], 
-            level: 'moderate', 
-            lastUpdated: new Date(),
-            name: "Cagayan de Oro Central"
-          },
-          { 
-            id: 2, 
-            location: [8.7333, 124.8145], 
-            level: 'high', 
-            lastUpdated: new Date(),
-            name: "Macajalar Bay Area"
-          },
-          { 
-            id: 3, 
-            location: [8.7133, 124.7945], 
-            level: 'low', 
-            lastUpdated: new Date(),
-            name: "Upper Puerto Area"
-          },
+          { id: 1, location: [8.723305556, 124.8045833], level: 'moderate', lastUpdated: new Date(), name: "Cagayan de Oro Central" },
+          { id: 2, location: [8.7333, 124.8145], level: 'high', lastUpdated: new Date(), name: "Macajalar Bay Area" },
+          { id: 3, location: [8.7133, 124.7945], level: 'low', lastUpdated: new Date(), name: "Upper Puerto Area" },
         ]);
         setIsLoading(false);
       }, 1000);
@@ -63,158 +38,10 @@ export default function Home() {
     fetchData();
   }, []);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoginForm({...loginForm, loading: true, error: ''});
-    
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          username: loginForm.username, 
-          password: loginForm.password 
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setShowLoginModal(false);
-        window.location.href = '/dashboard';
-      } else {
-        setLoginForm({
-          ...loginForm,
-          loading: false,
-          error: data.message || 'Login failed'
-        });
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      setLoginForm({
-        ...loginForm,
-        loading: false,
-        error: 'An error occurred during login'
-      });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 text-black">
-      {/* Login Modal */}
-      {showLoginModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-gray-800">Login</h3>
-              <button 
-                onClick={() => setShowLoginModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <form onSubmit={handleLogin}>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    id="username"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    value={loginForm.username}
-                    onChange={(e) => setLoginForm({...loginForm, username: e.target.value})}
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    value={loginForm.password}
-                    onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
-                    required
-                  />
-                </div>
-                {loginForm.error && (
-                  <p className="text-red-500 text-sm">{loginForm.error}</p>
-                )}
-                <div>
-                  <button
-                    type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    disabled={loginForm.loading}
-                  >
-                    {loginForm.loading ? (
-                      <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Logging in...
-                      </>
-                    ) : 'Login'}
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Header */}
-      <header className="bg-blue-800 text-white shadow-md">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center space-x-2">
-              <img src="/logo.png" alt="Flood Icon" className="h-8 w-8" />
-              <h1 className="text-xl font-bold">Flood Monitoring System</h1>
-            </div>
-          </div>
-          <nav>
-            <ul className="flex space-x-6">
-              <li>
-                <Link href="/dashboard" className="hover:text-blue-200 text-white">
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link href="/alerts" className="hover:text-blue-200 text-white">
-                  Alerts
-                </Link>
-              </li>
-              <li>
-                <Link href="/reports" className="hover:text-blue-200 text-white">
-                  Reports
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-blue-200 text-white">
-                  About
-                </Link>
-              </li>
-            </ul>
-          </nav>
-          <div className="flex items-center space-x-4">
-            <button 
-              onClick={() => setShowLoginModal(true)}
-              className="bg-blue-700 hover:bg-blue-600 px-3 py-1 rounded text-white"
-            >
-              Login
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* ✅ Use the new Header component */}
+      <Header />
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6 text-black">
